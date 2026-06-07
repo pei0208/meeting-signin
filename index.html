@@ -41,6 +41,10 @@
 </style>
 </head>
 <body>
+
+<!-- 隱藏 iframe 接收 form 提交結果，避免跳頁 -->
+<iframe name="hiddenFrame" style="display:none"></iframe>
+
 <div class="page-header">
   <div class="badge">會議簽到</div>
   <h1>出席確認</h1>
@@ -67,8 +71,18 @@
     <p id="successTime"></p>
   </div>
 </div>
+
+<!-- 隱藏 form，用 iframe 接收，完全繞過 CORS -->
+<form id="sigForm"
+  action="https://script.google.com/macros/s/AKfycbzKvhSiEXm6Z1ZmYqDe0t3Z-1fLdaARNuzzp46U7S7cS4BYa6LELb1H0N8gicOpZ8nM/exec"
+  method="POST"
+  target="hiddenFrame"
+  style="display:none">
+  <input type="hidden" name="timestamp" id="fTimestamp">
+  <input type="hidden" name="signature" id="fSignature">
+</form>
+
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzKvhSiEXm6Z1ZmYqDe0t3Z-1fLdaARNuzzp46U7S7cS4BYa6LELb1H0N8gicOpZ8nM/exec';
   const canvas = document.getElementById('sigCanvas');
   const ctx = canvas.getContext('2d');
   let drawing = false, hasSig = false;
@@ -118,13 +132,14 @@
     });
   }
 
-  async function submitSig() {
+  function submitSig() {
     if (!hasSig) { setStatus('請先完成簽名', true); return; }
+
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     setStatus('送出中…');
 
-    // 壓縮簽名圖到較小尺寸再轉 base64
+    // 壓縮簽名圖
     const offscreen = document.createElement('canvas');
     offscreen.width = 600;
     offscreen.height = 200;
@@ -135,21 +150,17 @@
     const sigData = offscreen.toDataURL('image/jpeg', 0.6);
     const timestamp = now();
 
-    try {
-      const resp = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ signature: sigData, timestamp })
-      });
+    // 填入隱藏 form 並送出
+    document.getElementById('fTimestamp').value = timestamp;
+    document.getElementById('fSignature').value = sigData;
+    document.getElementById('sigForm').submit();
 
+    // 等 2 秒後顯示完成畫面
+    setTimeout(() => {
       document.getElementById('successTime').textContent = timestamp;
       document.getElementById('formSection').style.display = 'none';
       document.getElementById('successSection').style.display = 'block';
-
-    } catch (err) {
-      setStatus('送出失敗，請再試一次', true);
-      btn.disabled = false;
-    }
+    }, 2000);
   }
 
   function setStatus(msg, isError = false) {
