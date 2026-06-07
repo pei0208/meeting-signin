@@ -6,229 +6,54 @@
 <title>會議簽到</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
-
   :root {
-    --bg: #f7f6f3;
-    --surface: #ffffff;
-    --border: #e2e0da;
-    --text: #1a1a18;
-    --muted: #7a7870;
-    --accent: #2d6a4f;
-    --accent-light: #e8f5ef;
-    --danger: #c0392b;
-    --radius: 12px;
+    --bg: #f7f6f3; --surface: #ffffff; --border: #e2e0da;
+    --text: #1a1a18; --muted: #7a7870; --accent: #2d6a4f;
+    --accent-light: #e8f5ef; --danger: #c0392b; --radius: 12px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-  }
-
-  .page-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--accent-light);
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 99px;
-    margin-bottom: 10px;
-    letter-spacing: 0.04em;
-  }
-
-  .page-header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  .page-header p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: var(--shadow);
-  }
-
-  .sig-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .sig-box {
-    position: relative;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg);
-    overflow: hidden;
-  }
-
-  canvas {
-    display: block;
-    width: 100%;
-    height: 200px;
-    cursor: crosshair;
-    touch-action: none;
-  }
-
-  .sig-hint {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  .sig-hint span {
-    font-size: 13px;
-    color: #c0bdb6;
-  }
-
-  .actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .btn-ghost {
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--muted);
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background 0.15s;
-    white-space: nowrap;
-  }
-
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; }
+  .page-header { text-align: center; margin-bottom: 1.5rem; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-light); color: var(--accent); font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 99px; margin-bottom: 10px; letter-spacing: 0.04em; }
+  .page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  .page-header p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 440px; box-shadow: var(--shadow); }
+  .sig-label { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  .sig-box { position: relative; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); overflow: hidden; }
+  canvas { display: block; width: 100%; height: 200px; cursor: crosshair; touch-action: none; }
+  .sig-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .sig-hint span { font-size: 13px; color: #c0bdb6; }
+  .actions { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-ghost { font-family: inherit; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
   .btn-ghost:hover { background: var(--bg); }
-
-  .btn-primary {
-    flex: 1;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    padding: 11px;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-  }
-
+  .btn-primary { flex: 1; font-family: inherit; font-size: 15px; font-weight: 700; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 11px; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
   .btn-primary:hover { opacity: 0.88; }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* 成功畫面 */
-  .success {
-    display: none;
-    text-align: center;
-    padding: 1rem 0;
-  }
-
-  .success-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--accent-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-  }
-
-  .success-icon svg {
-    width: 26px;
-    height: 26px;
-    stroke: var(--accent);
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
+  .success { display: none; text-align: center; padding: 1rem 0; }
+  .success-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+  .success-icon svg { width: 26px; height: 26px; stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .success h2 { font-size: 20px; font-weight: 700; }
   .success p { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-  .btn-next {
-    display: inline-block;
-    margin-top: 1.25rem;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--accent);
-    background: var(--accent-light);
-    border: none;
-    border-radius: 8px;
-    padding: 9px 20px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
+  .btn-next { display: inline-block; margin-top: 1.25rem; font-family: inherit; font-size: 14px; font-weight: 500; color: var(--accent); background: var(--accent-light); border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; transition: opacity 0.15s; }
   .btn-next:hover { opacity: 0.8; }
-
-  .status-msg {
-    font-size: 12px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 10px;
-    min-height: 18px;
-  }
-
+  .status-msg { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; min-height: 18px; }
   .status-msg.error { color: var(--danger); }
 </style>
 </head>
 <body>
-
 <div class="page-header">
   <div class="badge">會議簽到</div>
   <h1>出席確認</h1>
   <p>請在下方完成手寫簽名</p>
 </div>
-
 <div class="card">
   <div id="formSection">
     <p class="sig-label">手寫簽名</p>
     <div class="sig-box">
       <canvas id="sigCanvas"></canvas>
-      <div class="sig-hint" id="sigHint">
-        <span>請用滑鼠或手指在此簽名</span>
-      </div>
+      <div class="sig-hint" id="sigHint"><span>請用滑鼠或手指在此簽名</span></div>
     </div>
     <div class="actions">
       <button class="btn-ghost" onclick="clearSig()">清除重簽</button>
@@ -236,21 +61,17 @@
     </div>
     <p class="status-msg" id="statusMsg"></p>
   </div>
-
   <div class="success" id="successSection">
     <div class="success-icon">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <h2>簽到完成！</h2>
     <p id="successTime"></p>
-    <button class="btn-next" onclick="resetForm()">下一位簽到</button>
+
   </div>
 </div>
-
 <script>
-  // ⚠️ 部署 Apps Script 後，將網址貼在這裡
-  const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
-
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCsj9SIQXQofMgA_ILgVkwjaasiINjw11X0kePEAzR1nZhPTiLoYonAEgxPx5a0YI3/exec';
   const canvas = document.getElementById('sigCanvas');
   const ctx = canvas.getContext('2d');
   let drawing = false, hasSig = false;
@@ -282,10 +103,7 @@
   canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); markSig(); }, { passive: false });
   canvas.addEventListener('touchend', () => drawing = false);
 
-  function markSig() {
-    hasSig = true;
-    document.getElementById('sigHint').style.display = 'none';
-  }
+  function markSig() { hasSig = true; document.getElementById('sigHint').style.display = 'none'; }
 
   function clearSig() {
     const dpr = window.devicePixelRatio || 1;
@@ -305,7 +123,6 @@
 
   async function submitSig() {
     if (!hasSig) { setStatus('請先完成簽名', true); return; }
-
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     setStatus('送出中…');
@@ -314,14 +131,17 @@
     const timestamp = now();
 
     try {
+      // 用 FormData + no-cors 傳送，Apps Script 從 e.parameter 讀取
+      const form = new FormData();
+      form.append('signature', sigData);
+      form.append('timestamp', timestamp);
+
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ signature: sigData, timestamp })
+        body: form
       });
 
-      // no-cors 模式無法讀取回應，視為成功
       document.getElementById('successTime').textContent = timestamp;
       document.getElementById('formSection').style.display = 'none';
       document.getElementById('successSection').style.display = 'block';
